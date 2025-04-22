@@ -1,7 +1,6 @@
 import heapq
 from collections import defaultdict
-import random
-import sys
+from itertools import count
 
 
 def get_letter_frequencies(words):
@@ -70,7 +69,7 @@ def filter_words(words, guess, feedback):
 
     return filtered
 
-def best_first_search(word_list, target):
+def wordle(word_list, target):
     position_freq, overall_freq = get_letter_frequencies(word_list)
     heap = []
 
@@ -93,7 +92,7 @@ def best_first_search(word_list, target):
         history.append((guess, feedback))
 
         if feedback == ['g'] * 5:
-            return history
+            return attempts
 
         word_list = filter_words(word_list, guess, feedback)
         position_freq, overall_freq = get_letter_frequencies(word_list)
@@ -106,41 +105,24 @@ def best_first_search(word_list, target):
 
         attempts += 1
 
-    return history
-
-def benchmark():
-    pass
-
-def random_word():
-    pass
-
-def prompted_input():
-    pass
-
-
+    return attempts
 
 if __name__ == "__main__":
+    count = 0
+    attempts = 0
     with open('nyt-answers.txt') as f:
         word_list = [word.strip().lower() for word in f if len(word.strip()) == 5]
-    match sys.argv[1].lower():
-        case 'bench':
-            pass
-        case 'random':
-            pass
-        case 'input':
-            pass
-        case 'help':
-            print("""
-        
-available arguements:
-bench - run a benchmark on all valid words
-random - run a test on a random word
-input - run a test on a valid input
-help - see valid arguments
-""")
-        case _:
-            print("argument not recognized, maybe try help to see valid arguments")
-            quit()
+    total = len(word_list)
 
-    target = num
-    best_first_search(word_list, target)
+    for target in word_list:
+        attempts += wordle(word_list, target)
+        count +=1
+        print(count,'/',total)
+
+
+
+    avg = attempts / total
+    print(f"Average attempts: {avg:.2f}")
+
+
+
