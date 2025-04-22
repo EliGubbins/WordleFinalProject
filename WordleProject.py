@@ -1,6 +1,8 @@
 import heapq
 from collections import defaultdict
 
+from numpy.ma.core import append
+
 
 def get_letter_frequencies(words):
     position_freq = [defaultdict(int) for _ in range(5)]
@@ -109,6 +111,7 @@ def wordle(word_list, target):
 if __name__ == "__main__":
     count = 0
     total_attempts = 0
+    attempt_list = []
 
     with open('nyt-answers.txt') as f:
         word_list = [word.strip().lower() for word in f if len(word.strip()) == 5]
@@ -117,13 +120,37 @@ if __name__ == "__main__":
     for target in word_list:
         current_attempt = wordle(word_list, target)
         total_attempts += current_attempt
+        attempt_list.append(current_attempt)
         count +=1
         print(f'{target} --- {current_attempt} --- {count}/{length}')
 
 
+    one = attempt_list.count(1)
+    two = attempt_list.count(2)
+    three = attempt_list.count(3)
+    four = attempt_list.count(4)
+    five = attempt_list.count(5)
+    six = attempt_list.count(6)
+    seven = attempt_list.count(7)
+    eight = attempt_list.count(8)
+    nine = attempt_list.count(9)
 
     avg = total_attempts / length
+    print("------------------------")
     print(f"Average attempts: {avg:.2f}")
+    print(f"""
+    1: {one}---{one/count*100:.2f}%
+    2: {two}---{two/count*100:.2f}% 
+    3: {three}---{three/count*100:.2f}% 
+    4: {four}---{four/count*100:.2f}% 
+    5: {five}---{five/count*100:.2f}%
+    6: {six}---{six/count*100:.2f}%
+    below failed to get it in 6
+    7: {seven}---{seven/count*100:.2f}%   
+    8: {eight}---{eight/count*100:.2f}% 
+    9: {nine}---{nine/count*100:.2f}% 
+    """)
+
 
 
 
