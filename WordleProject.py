@@ -1,6 +1,5 @@
 import heapq
 from collections import defaultdict
-from itertools import count
 
 
 def get_letter_frequencies(words):
