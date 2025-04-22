@@ -81,8 +81,7 @@ def wordle(word_list, target):
     attempts = 0
     history = []
 
-    while heap and attempts < 6:
-        attempts += 1
+    while heap:
         _, guess = heapq.heappop(heap)
 
         if guess in guessed_words:
@@ -93,7 +92,7 @@ def wordle(word_list, target):
         history.append((guess, feedback))
 
         if feedback == ['g'] * 5:
-            return attempts
+            return attempts+1
 
         word_list = filter_words(word_list, guess, feedback)
         position_freq, overall_freq = get_letter_frequencies(word_list)
@@ -103,26 +102,28 @@ def wordle(word_list, target):
             if word not in guessed_words:
                 score = -score_word(word, position_freq, overall_freq)
                 heapq.heappush(heap, (score, word))
+        attempts += 1
 
-        #attempts += 1
 
     return attempts
 
 if __name__ == "__main__":
     count = 0
-    attempts = 0
+    total_attempts = 0
+
     with open('nyt-answers.txt') as f:
         word_list = [word.strip().lower() for word in f if len(word.strip()) == 5]
-    total = len(word_list)
+    length = len(word_list)
 
     for target in word_list:
-        attempts += wordle(word_list, target)
+        current_attempt = wordle(word_list, target)
+        total_attempts += current_attempt
         count +=1
-        print(count,'/',total)
+        print(f'{target} --- {current_attempt} --- {count}/{length}')
 
 
 
-    avg = attempts / total
+    avg = total_attempts / length
     print(f"Average attempts: {avg:.2f}")
 
 
