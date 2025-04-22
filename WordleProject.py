@@ -82,6 +82,7 @@ def wordle(word_list, target):
     history = []
 
     while heap and attempts < 6:
+        attempts += 1
         _, guess = heapq.heappop(heap)
 
         if guess in guessed_words:
@@ -103,7 +104,7 @@ def wordle(word_list, target):
                 score = -score_word(word, position_freq, overall_freq)
                 heapq.heappush(heap, (score, word))
 
-        attempts += 1
+        #attempts += 1
 
     return attempts
 
